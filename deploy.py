@@ -58,7 +58,7 @@ image = (
 )
 
 app = modal.App(Path(__file__).resolve().parent.name, image=image)
-secrets = modal.Secret.from_name("OPENAPI")
+secrets = modal.Secret.from_dict({})
 
 MODEL_DIR = "/root/models"
 model_volume = modal.Volume.from_name(_volume_name, create_if_missing=True)
