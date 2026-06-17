@@ -1,6 +1,6 @@
 # tongflow-modal-whisper
 
-Official TongFlow plugin. Speech recognition with **Whisper** (OpenAI Whisper, `base` model by default), running on a GPU via [Modal](https://modal.com). An alternative to `tongflow-modal-qwen3asr` on the same transcription slots.
+Official [TongFlow](https://github.com/tong-io/tongflow) plugin. Speech recognition with **Whisper** (OpenAI Whisper, `base` model by default), running on a GPU via [Modal](https://modal.com). An alternative to `tongflow-modal-qwen3asr` on the same transcription slots.
 
 ## Capabilities
 
