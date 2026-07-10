@@ -1,4 +1,9 @@
 {
+    "plugin": {
+        "name": "Whisper",
+        "description": "Speech recognition with OpenAI Whisper (with segment timestamps).",
+        "icon": "/plugins/tongflow-modal-whisper.svg"
+    },
     "env": [
         {
             "key": "MODAL_TOKEN_ID",
