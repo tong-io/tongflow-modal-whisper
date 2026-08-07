@@ -93,7 +93,7 @@ def _transcribe_asset(audio_asset, *, model_name: str, language: str) -> dict:
 
 @deploy
 @app.cls(
-    scaledown_window=5,
+    scaledown_window=2,
     cpu=4.0,
     memory=4096,
     timeout=600,
