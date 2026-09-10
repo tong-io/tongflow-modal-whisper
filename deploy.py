@@ -20,7 +20,34 @@ from tongflow.models.transcribe_timestamp import (
     TranscribeTimestampOutput,
 )
 from tongflow.node_slots import NodeSlots
-from tongflow.slots import node_slot
+from tongflow.slots import current_params, node_slot
+
+
+def _adv(name: str, default):
+    """Advanced-section override (``TONGFLOW_SLOT_PARAMS``) or the plugin default."""
+    v = current_params().get(name)
+    if v is None:
+        return default
+    if isinstance(default, bool):
+        return bool(v)
+    if isinstance(default, int):
+        return int(v)
+    if isinstance(default, float):
+        return float(v)
+    return v
+
+# Per-run knobs offered under the node's collapsed "Advanced" section.
+# Pure literal (the platform scanner reads it by AST, never imports this
+# module). Values reach the handlers via current_params(); an untouched
+# control is absent there and falls back to the plugin default.
+TONGFLOW_SLOT_PARAMS = {
+    "transcribe": {
+        "model_size": {"type": "select", "options": ["tiny", "base", "small", "medium", "large-v3", "large-v3-turbo"], "default": "base", "label": "Whisper model", "description": "Larger = more accurate, slower."},
+    },
+    "transcribe-timestamp": {
+        "model_size": {"type": "select", "options": ["tiny", "base", "small", "medium", "large-v3", "large-v3-turbo"], "default": "base", "label": "Whisper model", "description": "Larger = more accurate, slower."},
+    },
+}
 
 
 # Slots this plugin is the default implementation of: the node picker lists
@@ -57,7 +84,7 @@ image = (
         "cd /root/pywhispercpp && WHISPER_FFMPEG=1 pip install .",
     )
     .pip_install(
-        "tongflow==0.2.21", "fastapi[standard]",
+        "tongflow==0.3.3", "fastapi[standard]",
         "requests",
     )
 )
@@ -108,7 +135,7 @@ class Inference:
             return TranscribeOutput(success=False, error="Missing `audio` Asset")
         out = _transcribe_asset(
             input.audio,
-            model_name=WHISPER_MODEL,
+            model_name=_adv("model_size", WHISPER_MODEL),
             language=input.language or "auto",
         )
         if not out.get("success"):
@@ -133,7 +160,7 @@ class Inference:
             )
         out = _transcribe_asset(
             input.audio,
-            model_name=WHISPER_MODEL,
+            model_name=_adv("model_size", WHISPER_MODEL),
             language=input.language or "auto",
         )
         if not out.get("success"):
