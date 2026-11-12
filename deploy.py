@@ -84,7 +84,7 @@ image = (
         "cd /root/pywhispercpp && WHISPER_FFMPEG=1 pip install .",
     )
     .pip_install(
-        "tongflow==0.3.3", "fastapi[standard]",
+        "tongflow==1.0.0", "fastapi[standard]",
         "requests",
     )
 )
